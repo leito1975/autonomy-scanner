@@ -1,0 +1,16 @@
+{
+  "name": "autonomy-scanner-v2",
+  "version": "2.0.0",
+  "description": "AGOM Autonomy Scanner – Assessment-based governance evaluation",
+  "private": true,
+  "scripts": {
+    "install:all": "cd server && npm install && cd ../client && npm install",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "postinstall": "npm run install:all"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
