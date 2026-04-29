@@ -70,7 +70,8 @@ export default function AssessmentResults() {
 
     const handleDownloadPdf = () => {
         const token = localStorage.getItem('scanner_token');
-        const url = `/api/assessments/${id}/report`;
+        const apiBase = (import.meta.env.VITE_API_URL || '') + '/api';
+        const url = `${apiBase}/assessments/${id}/report`;
         fetch(url, { headers: { Authorization: `Bearer ${token}` } })
             .then((res) => {
                 if (!res.ok) throw new Error(tx('Failed to generate report', 'Error al generar el informe'));
