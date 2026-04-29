@@ -1,4 +1,6 @@
-const API_BASE = '/api';
+// In production, VITE_API_URL points to the Render backend (e.g. https://autonomy-scanner.onrender.com)
+// In development, uses the Vite proxy (/api → localhost:3001)
+const API_BASE = (import.meta.env.VITE_API_URL || '') + '/api';
 
 function getToken() {
     return localStorage.getItem('scanner_token');
