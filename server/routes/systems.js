@@ -80,30 +80,40 @@ router.put('/:assessmentId/systems/:id', (req, res) => {
         return res.status(404).json({ error: 'System not found.' });
     }
 
-    const { systemName, processName, description, autonomyLevel, governanceLevel } = req.body;
+    const { systemName, processName, description, autonomyLevel, governanceLevel, economicExposure, operationalImpact } = req.body;
 
-    // Validate autonomy/governance levels if provided
-    if (autonomyLevel !== undefined && (autonomyLevel < 0 || autonomyLevel > 4)) {
-        return res.status(400).json({ error: 'Autonomy level must be between 0 and 4.' });
-    }
-    if (governanceLevel !== undefined && (governanceLevel < 0 || governanceLevel > 4)) {
-        return res.status(400).json({ error: 'Governance level must be between 0 and 4.' });
-    }
+    // Validate all dimension levels (0–4)
+    const validateLevel = (val, name) => {
+        if (val !== undefined && (val < 0 || val > 4)) {
+            return `${name} must be between 0 and 4.`;
+        }
+        return null;
+    };
+    const err =
+        validateLevel(autonomyLevel,    'Autonomy level')    ||
+        validateLevel(governanceLevel,  'Governance level')  ||
+        validateLevel(economicExposure, 'Economic exposure') ||
+        validateLevel(operationalImpact,'Operational impact');
+    if (err) return res.status(400).json({ error: err });
 
     db.prepare(`
         UPDATE systems SET
-            system_name = COALESCE(?, system_name),
-            process_name = COALESCE(?, process_name),
-            description = COALESCE(?, description),
-            autonomy_level = COALESCE(?, autonomy_level),
-            governance_level = COALESCE(?, governance_level)
+            system_name       = COALESCE(?, system_name),
+            process_name      = COALESCE(?, process_name),
+            description       = COALESCE(?, description),
+            autonomy_level    = COALESCE(?, autonomy_level),
+            governance_level  = COALESCE(?, governance_level),
+            economic_exposure = COALESCE(?, economic_exposure),
+            operational_impact= COALESCE(?, operational_impact)
         WHERE id = ?
     `).run(
-        systemName || null,
-        processName || null,
-        description !== undefined ? description : null,
-        autonomyLevel !== undefined ? autonomyLevel : null,
-        governanceLevel !== undefined ? governanceLevel : null,
+        systemName    || null,
+        processName   || null,
+        description   !== undefined ? description   : null,
+        autonomyLevel    !== undefined ? autonomyLevel    : null,
+        governanceLevel  !== undefined ? governanceLevel  : null,
+        economicExposure !== undefined ? economicExposure : null,
+        operationalImpact!== undefined ? operationalImpact: null,
         req.params.id
     );
 

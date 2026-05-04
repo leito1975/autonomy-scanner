@@ -33,6 +33,22 @@ export default function AssessmentResults() {
         4: tx('Adaptive Governance',   'Gobernanza Adaptativa'),
     };
 
+    const ECONOMIC_LABELS = {
+        0: tx('No Financial Impact',   'Sin Impacto Financiero'),
+        1: tx('Low Exposure',          'Exposición Baja'),
+        2: tx('Moderate Exposure',     'Exposición Moderada'),
+        3: tx('High Exposure',         'Exposición Alta'),
+        4: tx('Critical Exposure',     'Exposición Crítica'),
+    };
+
+    const OPERATIONAL_LABELS = {
+        0: tx('Minimal Impact',        'Impacto Mínimo'),
+        1: tx('Local Impact',          'Impacto Local'),
+        2: tx('Departmental Impact',   'Impacto Departamental'),
+        3: tx('Organizational Impact', 'Impacto Organizacional'),
+        4: tx('Strategic Impact',      'Impacto Estratégico'),
+    };
+
     useEffect(() => {
         api.getAssessment(id)
             .then(setAssessment)
@@ -92,8 +108,12 @@ export default function AssessmentResults() {
     if (error && !assessment) return <div className="alert alert-error">{error}</div>;
 
     const { scores, systems } = assessment;
-    const evaluatedSystems = systems.filter(s => s.autonomy_level !== null && s.governance_level !== null);
+    const evaluatedSystems = systems.filter(s =>
+        s.autonomy_level !== null && s.governance_level !== null &&
+        s.economic_exposure !== null && s.operational_impact !== null
+    );
     const gapClass = scores.governanceGap > 0 ? 'gap-positive' : scores.governanceGap < 0 ? 'gap-negative' : 'gap-neutral';
+    const riskClass = scores.riskPriority > 1.5 ? 'gap-positive' : scores.riskPriority < 0 ? 'gap-negative' : 'gap-neutral';
 
     return (
         <div>
@@ -115,12 +135,22 @@ export default function AssessmentResults() {
 
             {error && <div className="alert alert-error">{error}</div>}
 
-            {/* Score Cards */}
-            <div className="score-grid" style={{ marginBottom: 'var(--space-xl)' }}>
-                <ScoreCard label={tx('Autonomy Score', 'Autonomy Score')} value={scores.autonomyScore?.toFixed(2)} color="var(--color-primary)" />
-                <ScoreCard label={tx('Governance Score', 'Governance Score')} value={scores.governanceScore?.toFixed(2)} color="var(--color-success)" />
-                <ScoreCard label="AGI Index" value={scores.agiIndex?.toFixed(2)} color="var(--color-warning)" />
-                <ScoreCard label="Governance Gap" value={scores.governanceGap?.toFixed(2)} color={scores.governanceGap > 0 ? 'var(--color-error)' : 'var(--color-success)'} />
+            {/* Score Cards — 4 dimensions */}
+            <div className="score-grid" style={{ marginBottom: 'var(--space-lg)' }}>
+                <ScoreCard label={tx('Autonomy', 'Autonomía')}           value={scores.autonomyScore?.toFixed(2)}    color="var(--color-primary)" subtitle={tx('How independently it acts', 'Qué tan independiente actúa')} />
+                <ScoreCard label={tx('Governance', 'Gobernanza')}        value={scores.governanceScore?.toFixed(2)}  color="var(--color-success)" subtitle={tx('Control & oversight level', 'Nivel de control y supervisión')} />
+                <ScoreCard label={tx('Economic Exposure', 'Exposición Económica')} value={scores.economicScore?.toFixed(2)} color="var(--color-warning)" subtitle={tx('Financial risk dimension', 'Dimensión de riesgo financiero')} />
+                <ScoreCard label={tx('Operational Impact', 'Impacto Operativo')}   value={scores.operationalScore?.toFixed(2)} color="#f97316" subtitle={tx('Consequence if it fails', 'Consecuencia si falla')} />
+            </div>
+
+            {/* Composite Scores */}
+            <div className="score-grid score-grid-2" style={{ marginBottom: 'var(--space-xl)' }}>
+                <ScoreCard label="AGI Index" value={scores.agi?.toFixed(2)} color="#8b5cf6"
+                    subtitle={tx('Overall governance maturity (avg of 4 dimensions)', 'Madurez general de gobernanza (promedio 4 dimensiones)')} />
+                <ScoreCard label={tx('Risk Priority', 'Prioridad de Riesgo')}
+                    value={scores.riskPriority?.toFixed(2)}
+                    color={scores.riskPriority > 1.5 ? 'var(--color-error)' : scores.riskPriority > 0 ? 'var(--color-warning)' : 'var(--color-success)'}
+                    subtitle={tx('Uncontrolled exposure index — higher = more urgent', 'Índice de exposición no controlada — mayor = más urgente')} />
             </div>
 
             {/* Gap Interpretation */}
@@ -167,32 +197,44 @@ export default function AssessmentResults() {
                                 <th>#</th>
                                 <th>{tx('System', 'Sistema')}</th>
                                 <th>{tx('Process', 'Proceso')}</th>
-                                <th>{tx('Autonomy Level', 'Nivel de Autonomía')}</th>
-                                <th>{tx('Governance Level', 'Nivel de Gobernanza')}</th>
+                                <th>{tx('Autonomy', 'Autonomía')}</th>
+                                <th>{tx('Governance', 'Gobernanza')}</th>
+                                <th>{tx('Economic', 'Económico')}</th>
+                                <th>{tx('Operational', 'Operativo')}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {systems.map((sys, idx) => (
-                                <tr key={sys.id}>
-                                    <td style={{ color: 'var(--color-text-muted)' }}>{idx + 1}</td>
-                                    <td style={{ color: 'var(--color-text)', fontWeight: 600 }}>{sys.system_name}</td>
-                                    <td>{sys.process_name}</td>
-                                    <td>
-                                        {sys.autonomy_level !== null ? (
-                                            <span className="badge badge-primary">
-                                                {sys.autonomy_level} — {AUTONOMY_LABELS[sys.autonomy_level]}
-                                            </span>
-                                        ) : <span style={{ color: 'var(--color-text-muted)' }}>—</span>}
-                                    </td>
-                                    <td>
-                                        {sys.governance_level !== null ? (
-                                            <span className="badge badge-warning">
-                                                {sys.governance_level} — {GOVERNANCE_LABELS[sys.governance_level]}
-                                            </span>
-                                        ) : <span style={{ color: 'var(--color-text-muted)' }}>—</span>}
-                                    </td>
-                                </tr>
-                            ))}
+                            {systems.map((sys, idx) => {
+                                const fully = sys.autonomy_level !== null && sys.governance_level !== null &&
+                                              sys.economic_exposure !== null && sys.operational_impact !== null;
+                                return (
+                                    <tr key={sys.id} style={fully ? {} : { opacity: 0.6 }}>
+                                        <td style={{ color: 'var(--color-text-muted)' }}>{idx + 1}</td>
+                                        <td style={{ color: 'var(--color-text)', fontWeight: 600 }}>{sys.system_name}</td>
+                                        <td>{sys.process_name}</td>
+                                        <td>
+                                            {sys.autonomy_level !== null
+                                                ? <span className="badge badge-primary">{sys.autonomy_level} — {AUTONOMY_LABELS[sys.autonomy_level]}</span>
+                                                : <span style={{ color: 'var(--color-text-muted)' }}>—</span>}
+                                        </td>
+                                        <td>
+                                            {sys.governance_level !== null
+                                                ? <span className="badge badge-success">{sys.governance_level} — {GOVERNANCE_LABELS[sys.governance_level]}</span>
+                                                : <span style={{ color: 'var(--color-text-muted)' }}>—</span>}
+                                        </td>
+                                        <td>
+                                            {sys.economic_exposure !== null
+                                                ? <span className="badge badge-warning">{sys.economic_exposure} — {ECONOMIC_LABELS[sys.economic_exposure]}</span>
+                                                : <span style={{ color: 'var(--color-text-muted)' }}>—</span>}
+                                        </td>
+                                        <td>
+                                            {sys.operational_impact !== null
+                                                ? <span className="badge" style={{ background: 'rgba(249,115,22,0.15)', color: '#f97316' }}>{sys.operational_impact} — {OPERATIONAL_LABELS[sys.operational_impact]}</span>
+                                                : <span style={{ color: 'var(--color-text-muted)' }}>—</span>}
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>

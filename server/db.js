@@ -45,10 +45,16 @@ function initSchema() {
             description TEXT,
             autonomy_level INTEGER DEFAULT NULL,
             governance_level INTEGER DEFAULT NULL,
+            economic_exposure INTEGER DEFAULT NULL,
+            operational_impact INTEGER DEFAULT NULL,
             created_at TEXT DEFAULT (datetime('now')),
             FOREIGN KEY (assessment_id) REFERENCES assessments(id) ON DELETE CASCADE
         );
     `);
+
+    // Migration: add new columns to existing DBs
+    try { db.exec(`ALTER TABLE systems ADD COLUMN economic_exposure INTEGER DEFAULT NULL`); } catch(_) {}
+    try { db.exec(`ALTER TABLE systems ADD COLUMN operational_impact INTEGER DEFAULT NULL`); } catch(_) {}
 }
 
 module.exports = { getDb };

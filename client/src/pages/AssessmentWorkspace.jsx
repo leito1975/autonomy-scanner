@@ -36,6 +36,22 @@ export default function AssessmentWorkspace() {
         { value: 4, label: es ? '4 — Gobernanza Adaptativa'       : '4 — Adaptive Governance' },
     ];
 
+    const ECONOMIC_OPTIONS = [
+        { value: 0, label: es ? '0 — Sin Impacto Financiero'      : '0 — No Financial Impact' },
+        { value: 1, label: es ? '1 — Exposición Baja'             : '1 — Low Exposure' },
+        { value: 2, label: es ? '2 — Exposición Moderada'         : '2 — Moderate Exposure' },
+        { value: 3, label: es ? '3 — Exposición Alta'             : '3 — High Exposure' },
+        { value: 4, label: es ? '4 — Exposición Crítica'          : '4 — Critical Exposure' },
+    ];
+
+    const OPERATIONAL_OPTIONS = [
+        { value: 0, label: es ? '0 — Impacto Mínimo'              : '0 — Minimal Impact' },
+        { value: 1, label: es ? '1 — Impacto Local'               : '1 — Local Impact' },
+        { value: 2, label: es ? '2 — Impacto Departamental'       : '2 — Departmental Impact' },
+        { value: 3, label: es ? '3 — Impacto Organizacional'      : '3 — Organizational Impact' },
+        { value: 4, label: es ? '4 — Impacto Estratégico'         : '4 — Strategic Impact' },
+    ];
+
     const tx = (en, es_) => es ? es_ : en;
 
     const fetchAssessment = useCallback(async () => {
@@ -69,8 +85,10 @@ export default function AssessmentWorkspace() {
         setSaving((prev) => ({ ...prev, [key]: true }));
         try {
             const updateData = {};
-            if (field === 'autonomy') updateData.autonomyLevel = Number(value);
-            if (field === 'governance') updateData.governanceLevel = Number(value);
+            if (field === 'autonomy')    updateData.autonomyLevel    = Number(value);
+            if (field === 'governance')  updateData.governanceLevel  = Number(value);
+            if (field === 'economic')    updateData.economicExposure = Number(value);
+            if (field === 'operational') updateData.operationalImpact= Number(value);
             await api.updateSystem(id, systemId, updateData);
             fetchAssessment();
         } catch (err) {
@@ -223,7 +241,10 @@ export default function AssessmentWorkspace() {
                             </div>
                             <div className="system-eval-grid">
                                 <div className="form-group" style={{ marginBottom: 0 }}>
-                                    <label className="form-label">{tx('Autonomy Level', 'Nivel de Autonomía')}</label>
+                                    <label className="form-label">
+                                        {tx('Autonomy Level', 'Nivel de Autonomía')}
+                                        <span className="eval-hint">{tx('How independently does this system act?', '¿Qué tan independiente actúa este sistema?')}</span>
+                                    </label>
                                     <select className="form-select" value={sys.autonomy_level ?? ''}
                                         onChange={(e) => handleEvaluate(sys.id, 'autonomy', e.target.value)}
                                         disabled={saving[`${sys.id}-autonomy`]} id={`autonomy-${sys.id}`}>
@@ -234,7 +255,10 @@ export default function AssessmentWorkspace() {
                                     </select>
                                 </div>
                                 <div className="form-group" style={{ marginBottom: 0 }}>
-                                    <label className="form-label">{tx('Governance Level', 'Nivel de Gobernanza')}</label>
+                                    <label className="form-label">
+                                        {tx('Governance Level', 'Nivel de Gobernanza')}
+                                        <span className="eval-hint">{tx('How controlled and audited is this system?', '¿Qué tan controlado y auditado está este sistema?')}</span>
+                                    </label>
                                     <select className="form-select" value={sys.governance_level ?? ''}
                                         onChange={(e) => handleEvaluate(sys.id, 'governance', e.target.value)}
                                         disabled={saving[`${sys.id}-governance`]} id={`governance-${sys.id}`}>
@@ -244,10 +268,47 @@ export default function AssessmentWorkspace() {
                                         ))}
                                     </select>
                                 </div>
+                                <div className="form-group" style={{ marginBottom: 0 }}>
+                                    <label className="form-label">
+                                        {tx('Economic Exposure', 'Exposición Económica')}
+                                        <span className="eval-hint">{tx('Can it generate autonomous costs or financial decisions?', '¿Puede generar costos autónomos o decisiones financieras?')}</span>
+                                    </label>
+                                    <select className="form-select" value={sys.economic_exposure ?? ''}
+                                        onChange={(e) => handleEvaluate(sys.id, 'economic', e.target.value)}
+                                        disabled={saving[`${sys.id}-economic`]} id={`economic-${sys.id}`}>
+                                        <option value="" disabled>{tx('Select level…', 'Seleccioná el nivel...')}</option>
+                                        {ECONOMIC_OPTIONS.map((opt) => (
+                                            <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="form-group" style={{ marginBottom: 0 }}>
+                                    <label className="form-label">
+                                        {tx('Operational Impact', 'Impacto Operativo')}
+                                        <span className="eval-hint">{tx('How severe is the impact if this system fails or misbehaves?', '¿Qué tan grave es el impacto si este sistema falla o actúa mal?')}</span>
+                                    </label>
+                                    <select className="form-select" value={sys.operational_impact ?? ''}
+                                        onChange={(e) => handleEvaluate(sys.id, 'operational', e.target.value)}
+                                        disabled={saving[`${sys.id}-operational`]} id={`operational-${sys.id}`}>
+                                        <option value="" disabled>{tx('Select level…', 'Seleccioná el nivel...')}</option>
+                                        {OPERATIONAL_OPTIONS.map((opt) => (
+                                            <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
-                            {sys.autonomy_level !== null && sys.governance_level !== null && (
+                            {sys.autonomy_level !== null && sys.governance_level !== null &&
+                             sys.economic_exposure !== null && sys.operational_impact !== null && (
                                 <div style={{ marginTop: 'var(--space-sm)', textAlign: 'right' }}>
-                                    <span className="badge badge-success">✓ {tx('Evaluated', 'Evaluado')}</span>
+                                    <span className="badge badge-success">✓ {tx('Fully Evaluated', 'Evaluación Completa')}</span>
+                                </div>
+                            )}
+                            {(sys.autonomy_level !== null || sys.governance_level !== null ||
+                              sys.economic_exposure !== null || sys.operational_impact !== null) &&
+                             !(sys.autonomy_level !== null && sys.governance_level !== null &&
+                               sys.economic_exposure !== null && sys.operational_impact !== null) && (
+                                <div style={{ marginTop: 'var(--space-sm)', textAlign: 'right' }}>
+                                    <span className="badge badge-warning">⋯ {tx('Partial', 'Parcial')}</span>
                                 </div>
                             )}
                         </div>
