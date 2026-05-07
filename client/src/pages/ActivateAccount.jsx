@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 export default function ActivateAccount() {
     const [searchParams] = useSearchParams();
     const token = searchParams.get('token');
+    const navigate = useNavigate();
+    const { loginWithToken } = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -39,8 +42,8 @@ export default function ActivateAccount() {
         setError('');
         try {
             const data = await api.activateAccount(token, password);
-            localStorage.setItem('scanner_token', data.token);
-            window.location.href = '/';
+            loginWithToken(data.token, data.user);
+            navigate('/', { replace: true });
         } catch (err) {
             setError(err.message);
             setSubmitting(false);

@@ -35,13 +35,18 @@ export function AuthProvider({ children }) {
         return data;
     };
 
+    const loginWithToken = (token, userData) => {
+        localStorage.setItem('scanner_token', token);
+        setUser(userData);
+    };
+
     const logout = () => {
         localStorage.removeItem('scanner_token');
         setUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+        <AuthContext.Provider value={{ user, loading, login, register, logout, loginWithToken }}>
             {children}
         </AuthContext.Provider>
     );
