@@ -14,17 +14,13 @@ async function request(path, options = {}) {
         ...options.headers,
     };
 
-    const res = await fetch(`${API_BASE}${path}`, {
-        ...options,
-        headers,
-    });
+    const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
 
     if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || `Request failed (${res.status})`);
     }
 
-    // Check if response is JSON
     const contentType = res.headers.get('content-type');
     if (contentType && contentType.includes('application/json')) {
         return res.json();
@@ -41,6 +37,11 @@ export const api = {
         request('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) }),
 
     getMe: () => request('/auth/me'),
+
+    validateInviteToken: (token) => request(`/auth/invite/${token}`),
+
+    activateAccount: (token, password) =>
+        request('/auth/activate', { method: 'POST', body: JSON.stringify({ token, password }) }),
 
     // Assessments
     getAssessments: () => request('/assessments'),
@@ -92,4 +93,19 @@ export const api = {
         const token = getToken();
         return `${API_BASE}/assessments/${assessmentId}/report?token=${encodeURIComponent(token)}`;
     },
+
+    // Admin
+    getAdminUsers: () => request('/admin/users'),
+
+    inviteUser: (email, role = 'user') =>
+        request('/admin/users/invite', { method: 'POST', body: JSON.stringify({ email, role }) }),
+
+    resendInvite: (userId) =>
+        request(`/admin/users/${userId}/resend-invite`, { method: 'POST' }),
+
+    updateUser: (userId, data) =>
+        request(`/admin/users/${userId}`, { method: 'PATCH', body: JSON.stringify(data) }),
+
+    deleteUser: (userId) =>
+        request(`/admin/users/${userId}`, { method: 'DELETE' }),
 };

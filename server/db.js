@@ -1,45 +1,42 @@
-const Database = require('better-sqlite3');
-const path = require('path');
+const { Pool } = require('pg');
 
-const DB_PATH = path.join(__dirname, 'scanner.db');
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+});
 
-let db;
-
-function getDb() {
-    if (!db) {
-        db = new Database(DB_PATH);
-        db.pragma('journal_mode = WAL');
-        db.pragma('foreign_keys = ON');
-        initSchema();
-    }
-    return db;
-}
-
-function initSchema() {
-    db.exec(`
+async function initSchema() {
+    await pool.query(`
         CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             email TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            created_at TEXT DEFAULT (datetime('now'))
-        );
+            password_hash TEXT,
+            role TEXT NOT NULL DEFAULT 'user',
+            is_active BOOLEAN NOT NULL DEFAULT true,
+            invite_token TEXT,
+            invite_token_expires_at TIMESTAMPTZ,
+            created_at TIMESTAMPTZ DEFAULT NOW()
+        )
+    `);
 
+    await pool.query(`
         CREATE TABLE IF NOT EXISTS assessments (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id),
             organization_name TEXT NOT NULL,
             assessor_name TEXT NOT NULL,
             assessment_date TEXT NOT NULL,
             notes TEXT,
-            branding_image BLOB,
+            branding_image BYTEA,
             branding_mime TEXT,
-            created_at TEXT DEFAULT (datetime('now')),
-            FOREIGN KEY (user_id) REFERENCES users(id)
-        );
+            created_at TIMESTAMPTZ DEFAULT NOW()
+        )
+    `);
 
+    await pool.query(`
         CREATE TABLE IF NOT EXISTS systems (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            assessment_id INTEGER NOT NULL,
+            id SERIAL PRIMARY KEY,
+            assessment_id INTEGER NOT NULL REFERENCES assessments(id) ON DELETE CASCADE,
             system_name TEXT NOT NULL,
             process_name TEXT NOT NULL,
             description TEXT,
@@ -47,14 +44,22 @@ function initSchema() {
             governance_level INTEGER DEFAULT NULL,
             economic_exposure INTEGER DEFAULT NULL,
             operational_impact INTEGER DEFAULT NULL,
-            created_at TEXT DEFAULT (datetime('now')),
-            FOREIGN KEY (assessment_id) REFERENCES assessments(id) ON DELETE CASCADE
-        );
+            created_at TIMESTAMPTZ DEFAULT NOW()
+        )
     `);
 
-    // Migration: add new columns to existing DBs
-    try { db.exec(`ALTER TABLE systems ADD COLUMN economic_exposure INTEGER DEFAULT NULL`); } catch(_) {}
-    try { db.exec(`ALTER TABLE systems ADD COLUMN operational_impact INTEGER DEFAULT NULL`); } catch(_) {}
+    // Migrations: add new columns to users if they don't exist
+    const migrations = [
+        `ALTER TABLE users ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'user'`,
+        `ALTER TABLE users ADD COLUMN IF NOT EXISTS is_active BOOLEAN NOT NULL DEFAULT true`,
+        `ALTER TABLE users ADD COLUMN IF NOT EXISTS invite_token TEXT`,
+        `ALTER TABLE users ADD COLUMN IF NOT EXISTS invite_token_expires_at TIMESTAMPTZ`,
+        `ALTER TABLE systems ADD COLUMN IF NOT EXISTS economic_exposure INTEGER DEFAULT NULL`,
+        `ALTER TABLE systems ADD COLUMN IF NOT EXISTS operational_impact INTEGER DEFAULT NULL`,
+    ];
+    for (const sql of migrations) {
+        await pool.query(sql).catch(() => {});
+    }
 }
 
-module.exports = { getDb };
+module.exports = { pool, initSchema };

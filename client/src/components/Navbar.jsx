@@ -14,7 +14,6 @@ export default function Navbar() {
                     {t('nav', 'brand')}
                 </Link>
                 <div className="navbar-actions">
-                    {/* Language toggle */}
                     <button
                         onClick={toggleLang}
                         style={{
@@ -35,6 +34,11 @@ export default function Navbar() {
 
                     {user && (
                         <>
+                            {user.role === 'admin' && (
+                                <Link to="/admin" className="btn btn-ghost btn-sm">
+                                    Admin
+                                </Link>
+                            )}
                             <span className="navbar-user">{user.email}</span>
                             <button className="btn btn-ghost btn-sm" onClick={logout}>
                                 {t('nav', 'logout')}

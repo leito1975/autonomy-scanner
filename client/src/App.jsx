@@ -8,6 +8,8 @@ import Dashboard from './pages/Dashboard';
 import CreateAssessment from './pages/CreateAssessment';
 import AssessmentWorkspace from './pages/AssessmentWorkspace';
 import AssessmentResults from './pages/AssessmentResults';
+import AdminPanel from './pages/AdminPanel';
+import ActivateAccount from './pages/ActivateAccount';
 
 export default function App() {
     const { user, loading } = useAuth();
@@ -31,12 +33,14 @@ export default function App() {
                     {/* Public */}
                     <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
                     <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register />} />
+                    <Route path="/activate" element={user ? <Navigate to="/" replace /> : <ActivateAccount />} />
 
                     {/* Protected */}
                     <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                     <Route path="/assessments/new" element={<ProtectedRoute><CreateAssessment /></ProtectedRoute>} />
                     <Route path="/assessments/:id" element={<ProtectedRoute><AssessmentWorkspace /></ProtectedRoute>} />
                     <Route path="/assessments/:id/results" element={<ProtectedRoute><AssessmentResults /></ProtectedRoute>} />
+                    <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminPanel /></ProtectedRoute>} />
 
                     {/* Fallback */}
                     <Route path="*" element={<Navigate to="/" replace />} />
