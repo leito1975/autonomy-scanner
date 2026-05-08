@@ -14,7 +14,8 @@ import ActivateAccount from './pages/ActivateAccount';
 export default function App() {
     const { user, loading } = useAuth();
 
-    if (window.location.pathname.replace(/\/$/, '') === '/activate') {
+    const activateParams = new URLSearchParams(window.location.search);
+    if (activateParams.get('activate') === 'true' && activateParams.get('token')) {
         return (
             <div className="app-layout">
                 <Navbar />

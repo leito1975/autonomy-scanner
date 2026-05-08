@@ -5,7 +5,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@agom.app';
 
 async function sendInviteEmail(to, token) {
-    const activationUrl = `${FRONTEND_URL}/activate?token=${token}`;
+    const activationUrl = `${FRONTEND_URL}/?activate=true&token=${token}`;
 
     await resend.emails.send({
         from: FROM_EMAIL,
