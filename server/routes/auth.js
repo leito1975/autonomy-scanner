@@ -9,6 +9,9 @@ const wrap = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch
 
 // POST /api/auth/register
 router.post('/register', wrap(async (req, res) => {
+    if (process.env.REGISTRATION_ENABLED !== 'true') {
+        return res.status(403).json({ error: 'Public registration is disabled. Contact an administrator for an invitation.' });
+    }
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ error: 'Email and password are required.' });
     if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters.' });
