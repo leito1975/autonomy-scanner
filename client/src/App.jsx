@@ -14,14 +14,12 @@ import ActivateAccount from './pages/ActivateAccount';
 export default function App() {
     const { user, loading } = useAuth();
 
-    if (window.location.pathname === '/activate') {
+    if (window.location.pathname.replace(/\/$/, '') === '/activate') {
         return (
             <div className="app-layout">
                 <Navbar />
                 <main className="main-content">
-                    <Routes>
-                        <Route path="/activate" element={<ActivateAccount />} />
-                    </Routes>
+                    <ActivateAccount />
                 </main>
             </div>
         );
