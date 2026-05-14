@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
+import { LEVEL_CRITERIA } from '../data/levelCriteria';
 
 export default function AssessmentWorkspace() {
     const { id } = useParams();
@@ -16,6 +17,8 @@ export default function AssessmentWorkspace() {
     const [addError, setAddError] = useState('');
     const [saving, setSaving] = useState({});
     const [deleting, setDeleting] = useState(false);
+    const [expandedInfo, setExpandedInfo] = useState(new Set());
+    const [criteriaActiveTab, setCriteriaActiveTab] = useState({});
 
     const es = lang === 'es';
     const MAX_SYSTEMS = 10;
@@ -52,6 +55,13 @@ export default function AssessmentWorkspace() {
         { value: 4, label: es ? '4 — Impacto Estratégico'         : '4 — Strategic Impact' },
     ];
 
+    const DIM_OPTIONS = {
+        autonomy:    AUTONOMY_OPTIONS,
+        governance:  GOVERNANCE_OPTIONS,
+        economic:    ECONOMIC_OPTIONS,
+        operational: OPERATIONAL_OPTIONS,
+    };
+
     const tx = (en, es_) => es ? es_ : en;
 
     const fetchAssessment = useCallback(async () => {
@@ -83,6 +93,9 @@ export default function AssessmentWorkspace() {
     const handleEvaluate = async (systemId, field, value) => {
         const key = `${systemId}-${field}`;
         setSaving((prev) => ({ ...prev, [key]: true }));
+        if (expandedInfo.has(key)) {
+            setCriteriaActiveTab((prev) => ({ ...prev, [key]: Number(value) }));
+        }
         try {
             const updateData = {};
             if (field === 'autonomy')    updateData.autonomyLevel    = Number(value);
@@ -120,6 +133,78 @@ export default function AssessmentWorkspace() {
         }
     };
 
+    const toggleInfo = (systemId, dim, currentLevel) => {
+        const key = `${systemId}-${dim}`;
+        setExpandedInfo((prev) => {
+            const next = new Set(prev);
+            if (next.has(key)) {
+                next.delete(key);
+            } else {
+                next.add(key);
+                setCriteriaActiveTab((tabs) => ({
+                    ...tabs,
+                    [key]: currentLevel != null ? Number(currentLevel) : 0,
+                }));
+            }
+            return next;
+        });
+    };
+
+    const renderCriteriaPanel = (dim, systemId) => {
+        const key = `${systemId}-${dim}`;
+        if (!expandedInfo.has(key)) return null;
+
+        const activeTab = criteriaActiveTab[key] ?? 0;
+        const criteria = LEVEL_CRITERIA[dim][activeTab][es ? 'es' : 'en'];
+        const options = DIM_OPTIONS[dim];
+
+        return (
+            <div className="criteria-panel">
+                <div className="criteria-tabs">
+                    {options.map((opt) => (
+                        <button
+                            key={opt.value}
+                            type="button"
+                            className={`criteria-tab${activeTab === opt.value ? ' criteria-tab-active' : ''}`}
+                            onClick={() => setCriteriaActiveTab((prev) => ({ ...prev, [key]: opt.value }))}
+                            title={opt.label}
+                        >
+                            {opt.value}
+                        </button>
+                    ))}
+                    <span className="criteria-tab-label">{options[activeTab]?.label}</span>
+                </div>
+                <p className="criteria-description">{criteria.description}</p>
+                <div className="criteria-columns">
+                    <div className="criteria-section">
+                        <p className="criteria-section-title">
+                            {tx('Industry examples', 'Ejemplos en la industria')}
+                        </p>
+                        <ul className="criteria-list">
+                            {criteria.examples.map((ex, i) => <li key={i}>{ex}</li>)}
+                        </ul>
+                    </div>
+                    <div className="criteria-section">
+                        <p className="criteria-section-title">
+                            {tx('Guiding questions', 'Preguntas guía')}
+                        </p>
+                        <ul className="criteria-list criteria-list-questions">
+                            {criteria.questions.map((q, i) => <li key={i}>{q}</li>)}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    const getSystemFieldValue = (sys, field) => {
+        if (field === 'autonomy')    return sys.autonomy_level;
+        if (field === 'governance')  return sys.governance_level;
+        if (field === 'economic')    return sys.economic_exposure;
+        if (field === 'operational') return sys.operational_impact;
+        return null;
+    };
+
     if (loading) return <div className="loading"><div className="loading-spinner"></div><p>…</p></div>;
     if (error && !assessment) return <div className="alert alert-error">{error}</div>;
 
@@ -127,6 +212,37 @@ export default function AssessmentWorkspace() {
     const scores = assessment?.scores || {};
     const canAddMore = systems.length < MAX_SYSTEMS;
     const hasEvaluatedSystems = scores.evaluatedCount > 0;
+
+    const DIMENSIONS = [
+        {
+            field: 'autonomy',
+            label: tx('Autonomy Level', 'Nivel de Autonomía'),
+            hint:  tx('How independently does this system act?', '¿Qué tan independiente actúa este sistema?'),
+            options: AUTONOMY_OPTIONS,
+            selectId: (sysId) => `autonomy-${sysId}`,
+        },
+        {
+            field: 'governance',
+            label: tx('Governance Level', 'Nivel de Gobernanza'),
+            hint:  tx('How controlled and audited is this system?', '¿Qué tan controlado y auditado está este sistema?'),
+            options: GOVERNANCE_OPTIONS,
+            selectId: (sysId) => `governance-${sysId}`,
+        },
+        {
+            field: 'economic',
+            label: tx('Economic Exposure', 'Exposición Económica'),
+            hint:  tx('Can it generate autonomous costs or financial decisions?', '¿Puede generar costos autónomos o decisiones financieras?'),
+            options: ECONOMIC_OPTIONS,
+            selectId: (sysId) => `economic-${sysId}`,
+        },
+        {
+            field: 'operational',
+            label: tx('Operational Impact', 'Impacto Operativo'),
+            hint:  tx('How severe is the impact if this system fails or misbehaves?', '¿Qué tan grave es el impacto si este sistema falla o actúa mal?'),
+            options: OPERATIONAL_OPTIONS,
+            selectId: (sysId) => `operational-${sysId}`,
+        },
+    ];
 
     return (
         <div>
@@ -240,62 +356,41 @@ export default function AssessmentWorkspace() {
                                 <button className="btn btn-ghost btn-sm" onClick={() => handleDeleteSystem(sys.id)} title={tx('Remove', 'Eliminar')}>✕</button>
                             </div>
                             <div className="system-eval-grid">
-                                <div className="form-group" style={{ marginBottom: 0 }}>
-                                    <label className="form-label">
-                                        {tx('Autonomy Level', 'Nivel de Autonomía')}
-                                        <span className="eval-hint">{tx('How independently does this system act?', '¿Qué tan independiente actúa este sistema?')}</span>
-                                    </label>
-                                    <select className="form-select" value={sys.autonomy_level ?? ''}
-                                        onChange={(e) => handleEvaluate(sys.id, 'autonomy', e.target.value)}
-                                        disabled={saving[`${sys.id}-autonomy`]} id={`autonomy-${sys.id}`}>
-                                        <option value="" disabled>{tx('Select level…', 'Seleccioná el nivel...')}</option>
-                                        {AUTONOMY_OPTIONS.map((opt) => (
-                                            <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="form-group" style={{ marginBottom: 0 }}>
-                                    <label className="form-label">
-                                        {tx('Governance Level', 'Nivel de Gobernanza')}
-                                        <span className="eval-hint">{tx('How controlled and audited is this system?', '¿Qué tan controlado y auditado está este sistema?')}</span>
-                                    </label>
-                                    <select className="form-select" value={sys.governance_level ?? ''}
-                                        onChange={(e) => handleEvaluate(sys.id, 'governance', e.target.value)}
-                                        disabled={saving[`${sys.id}-governance`]} id={`governance-${sys.id}`}>
-                                        <option value="" disabled>{tx('Select level…', 'Seleccioná el nivel...')}</option>
-                                        {GOVERNANCE_OPTIONS.map((opt) => (
-                                            <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="form-group" style={{ marginBottom: 0 }}>
-                                    <label className="form-label">
-                                        {tx('Economic Exposure', 'Exposición Económica')}
-                                        <span className="eval-hint">{tx('Can it generate autonomous costs or financial decisions?', '¿Puede generar costos autónomos o decisiones financieras?')}</span>
-                                    </label>
-                                    <select className="form-select" value={sys.economic_exposure ?? ''}
-                                        onChange={(e) => handleEvaluate(sys.id, 'economic', e.target.value)}
-                                        disabled={saving[`${sys.id}-economic`]} id={`economic-${sys.id}`}>
-                                        <option value="" disabled>{tx('Select level…', 'Seleccioná el nivel...')}</option>
-                                        {ECONOMIC_OPTIONS.map((opt) => (
-                                            <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="form-group" style={{ marginBottom: 0 }}>
-                                    <label className="form-label">
-                                        {tx('Operational Impact', 'Impacto Operativo')}
-                                        <span className="eval-hint">{tx('How severe is the impact if this system fails or misbehaves?', '¿Qué tan grave es el impacto si este sistema falla o actúa mal?')}</span>
-                                    </label>
-                                    <select className="form-select" value={sys.operational_impact ?? ''}
-                                        onChange={(e) => handleEvaluate(sys.id, 'operational', e.target.value)}
-                                        disabled={saving[`${sys.id}-operational`]} id={`operational-${sys.id}`}>
-                                        <option value="" disabled>{tx('Select level…', 'Seleccioná el nivel...')}</option>
-                                        {OPERATIONAL_OPTIONS.map((opt) => (
-                                            <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
+                                {DIMENSIONS.map(({ field, label, hint, options, selectId }) => {
+                                    const currentValue = getSystemFieldValue(sys, field);
+                                    const infoKey = `${sys.id}-${field}`;
+                                    const isInfoOpen = expandedInfo.has(infoKey);
+                                    return (
+                                        <div key={field} className="form-group" style={{ marginBottom: 0 }}>
+                                            <label className="form-label" htmlFor={selectId(sys.id)}>
+                                                <span className="eval-label-text">{label}</span>
+                                                <button
+                                                    type="button"
+                                                    className={`info-toggle-btn${isInfoOpen ? ' info-toggle-btn-active' : ''}`}
+                                                    onClick={() => toggleInfo(sys.id, field, currentValue)}
+                                                    title={tx('See evaluation criteria', 'Ver criterios de evaluación')}
+                                                    aria-expanded={isInfoOpen}
+                                                >
+                                                    ⓘ
+                                                </button>
+                                                <span className="eval-hint">{hint}</span>
+                                            </label>
+                                            <select
+                                                className="form-select"
+                                                value={currentValue ?? ''}
+                                                onChange={(e) => handleEvaluate(sys.id, field, e.target.value)}
+                                                disabled={saving[`${sys.id}-${field}`]}
+                                                id={selectId(sys.id)}
+                                            >
+                                                <option value="" disabled>{tx('Select level…', 'Seleccioná el nivel...')}</option>
+                                                {options.map((opt) => (
+                                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                                ))}
+                                            </select>
+                                            {renderCriteriaPanel(field, sys.id)}
+                                        </div>
+                                    );
+                                })}
                             </div>
                             {sys.autonomy_level !== null && sys.governance_level !== null &&
                              sys.economic_exposure !== null && sys.operational_impact !== null && (

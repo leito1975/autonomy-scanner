@@ -825,3 +825,150 @@ body {
     background: rgba(239, 68, 68, 0.1);
     color: var(--color-danger);
 }
+
+/* ─── Eval label with info toggle ─── */
+.eval-label-text {
+    margin-right: 0.3rem;
+}
+
+.info-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    padding: 0 0.2rem;
+    line-height: 1;
+    vertical-align: middle;
+    transition: color var(--transition);
+    border-radius: var(--radius-sm);
+}
+
+.info-toggle-btn:hover {
+    color: var(--color-primary-hover);
+}
+
+.info-toggle-btn-active {
+    color: var(--color-primary);
+}
+
+/* ─── Criteria Panel ─── */
+.criteria-panel {
+    margin-top: var(--space-sm);
+    background: rgba(99, 102, 241, 0.05);
+    border: 1px solid rgba(99, 102, 241, 0.18);
+    border-left: 3px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    animation: criteriaFadeIn 0.15s ease;
+}
+
+@keyframes criteriaFadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.criteria-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: var(--space-sm);
+    flex-wrap: wrap;
+}
+
+.criteria-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+    color: var(--color-text-secondary);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    flex-shrink: 0;
+}
+
+.criteria-tab:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary-hover);
+}
+
+.criteria-tab-active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+}
+
+.criteria-tab-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-primary-hover);
+    margin-left: 0.25rem;
+}
+
+.criteria-description {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0 0 var(--space-sm) 0;
+}
+
+.criteria-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+}
+
+.criteria-section-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    margin: 0 0 0.35rem 0;
+}
+
+.criteria-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.criteria-list li {
+    font-size: 0.76rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+    padding-left: 0.9rem;
+    position: relative;
+}
+
+.criteria-list li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.criteria-list-questions li::before {
+    content: '?';
+    font-size: 0.65rem;
+    top: 0.05rem;
+}
+
+@media (max-width: 640px) {
+    .criteria-columns {
+        grid-template-columns: 1fr;
+    }
+}
