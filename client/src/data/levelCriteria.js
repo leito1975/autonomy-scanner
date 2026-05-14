@@ -2,57 +2,57 @@ export const LEVEL_CRITERIA = {
     autonomy: [
         {
             es: {
-                description: "Todas las acciones son ejecutadas manualmente por operadores humanos. No existe lógica automatizada que tome decisiones por sí sola.",
+                description: "Todas las acciones son ejecutadas manualmente por personas. No existe lógica automatizada que tome decisiones por sí sola; el sistema solo registra o visualiza.",
                 examples: [
-                    "Registro manual de presiones en pozos con formularios en papel o planilla Excel",
-                    "Apertura y cierre de válvulas ejecutada físicamente por operador en planta de gas",
-                    "Lectura de medidores de caudal en recorrida de ronda con formulario papel"
+                    "Tecnología: agente de soporte que clasifica y responde tickets manualmente desde un CRM sin ninguna automatización",
+                    "Energía/O&G: operador que abre y cierra válvulas físicamente en planta de gas y registra presiones en formulario papel",
+                    "Salud: enfermera que registra signos vitales en planilla física cada 4 horas sin ningún sistema de alerta"
                 ],
                 questions: [
-                    "¿Requiere un operador presente para cada acción del sistema?",
-                    "¿No existe ningún PLC, script o algoritmo que actúe sin orden humana directa?",
+                    "¿Cada acción del sistema requiere que una persona la ordene o ejecute explícitamente?",
+                    "¿No existe ningún script, PLC o algoritmo que actúe sin orden humana directa?",
                     "¿El sistema solo registra o visualiza datos, sin actuar por sí mismo?"
                 ]
             },
             en: {
-                description: "All actions are performed manually by human operators. No automated logic makes decisions on its own.",
+                description: "All actions are performed manually by people. No automated logic makes decisions on its own; the system only records or visualizes.",
                 examples: [
-                    "Manual wellhead pressure logging on paper forms or Excel",
-                    "Valve open/close physically executed by field operator at gas plant",
-                    "Flow meter readings during manual rounds with paper forms"
+                    "Technology: support agent who manually classifies and responds to tickets from a CRM with no automation",
+                    "Energy/O&G: operator who manually opens/closes valves at gas plant and logs pressures on paper forms",
+                    "Health: nurse who manually records vital signs on paper every 4 hours with no alert system"
                 ],
                 questions: [
-                    "Does every action require an operator to be physically present?",
-                    "Is there no PLC, script, or algorithm acting without direct human order?",
+                    "Does every action require a person to explicitly order or execute it?",
+                    "Is there no script, PLC, or algorithm acting without direct human order?",
                     "Does the system only record or visualize data without acting on its own?"
                 ]
             }
         },
         {
             es: {
-                description: "El sistema ejecuta secuencias predefinidas de forma automática bajo reglas fijas (if/then). No hay modelo predictivo ni adaptación dinámica.",
+                description: "El sistema ejecuta secuencias predefinidas de forma automática bajo reglas fijas (if/then). No hay modelo predictivo ni adaptación; las condiciones fueron programadas una vez.",
                 examples: [
-                    "PLC que activa alarma o cierra válvula cuando la presión supera un umbral fijo",
-                    "SCADA con lógica de enclavamiento automático para protección de equipos",
-                    "Bomba de inyección que arranca y para según nivel de tanque por setpoint fijo"
+                    "Tecnología: reglas de negocio en plataforma de e-commerce que aplican descuentos automáticos cuando el carrito supera un monto fijo",
+                    "Energía/O&G: PLC que activa alarma y cierra válvula automáticamente cuando la presión supera un umbral fijo configurado",
+                    "Salud: sistema de alertas de enfermería que notifica al personal cuando la frecuencia cardíaca del paciente sale del rango configurado"
                 ],
                 questions: [
-                    "¿Las reglas de actuación son fijas y no se adaptan con el tiempo?",
-                    "¿Un operador programó las condiciones una vez y el sistema las ejecuta sin modificarlas?",
-                    "¿No utiliza ML ni modelos estadísticos para tomar decisiones?"
+                    "¿Las reglas de actuación son fijas y no cambian con el tiempo ni aprenden de datos?",
+                    "¿Un operador o developer programó las condiciones una vez y el sistema las ejecuta sin modificarlas?",
+                    "¿No utiliza ML ni modelos estadísticos entrenados para tomar sus decisiones?"
                 ]
             },
             en: {
-                description: "The system executes predefined sequences automatically under fixed rules (if/then). No predictive model or dynamic adaptation.",
+                description: "The system executes predefined sequences automatically under fixed rules (if/then). No predictive model or adaptation; conditions were programmed once.",
                 examples: [
-                    "PLC that triggers alarm or closes valve when pressure exceeds a fixed threshold",
-                    "SCADA with automatic interlock logic for equipment protection",
-                    "Injection pump that starts/stops based on fixed tank level setpoint"
+                    "Technology: business rules on e-commerce platform that automatically apply discounts when cart exceeds a fixed amount",
+                    "Energy/O&G: PLC that automatically triggers alarm and closes valve when pressure exceeds a fixed configured threshold",
+                    "Health: nursing alert system that notifies staff when patient heart rate falls outside a configured range"
                 ],
                 questions: [
-                    "Are the actuation rules fixed and non-adaptive over time?",
-                    "Did an operator program the conditions once, and the system executes them unchanged?",
-                    "Does it not use ML or statistical models to make decisions?"
+                    "Are the actuation rules fixed and do they not change over time or learn from data?",
+                    "Did an operator or developer program the conditions once, and the system executes them unchanged?",
+                    "Does it not use ML or trained statistical models to make its decisions?"
                 ]
             }
         },
@@ -60,83 +60,83 @@ export const LEVEL_CRITERIA = {
             es: {
                 description: "Incorpora modelos de ML/IA que analizan datos y generan recomendaciones o alertas, pero un humano debe aprobar o ejecutar cada acción resultante.",
                 examples: [
-                    "Sistema de mantenimiento predictivo en compresores que alerta al técnico con días de anticipación",
-                    "Optimizador de yacimiento que sugiere ajustes de choke, requiriendo confirmación del ingeniero",
-                    "Modelo de detección de anomalías en líneas de proceso que genera tickets de revisión humana"
+                    "Tecnología: motor de recomendación de productos que sugiere artículos al usuario, quien decide libremente si los agrega al carrito",
+                    "Energía/O&G: sistema de mantenimiento predictivo en compresores que alerta al técnico con días de anticipación, requiriendo que él programe la intervención",
+                    "Salud: sistema de diagnóstico por imágenes que resalta hallazgos sospechosos en radiografías para revisión y validación del radiólogo"
                 ],
                 questions: [
-                    "¿Un humano siempre aprueba antes de que se ejecute la acción recomendada?",
-                    "¿El sistema genera insights o recomendaciones, pero no actúa de forma autónoma?",
-                    "¿Hay un modelo entrenado con datos históricos involucrado en el análisis?"
+                    "¿Un humano siempre aprueba o ejecuta la acción antes de que tenga efecto real?",
+                    "¿El sistema genera recomendaciones o alertas, pero no actúa de forma autónoma sobre procesos o usuarios?",
+                    "¿Hay un modelo entrenado con datos históricos que genera los insights o sugerencias?"
                 ]
             },
             en: {
                 description: "Incorporates ML/AI models that analyze data and generate recommendations or alerts, but a human must approve or execute each resulting action.",
                 examples: [
-                    "Compressor predictive maintenance system that alerts technician days in advance",
-                    "Reservoir optimizer that suggests choke adjustments requiring engineer confirmation",
-                    "Anomaly detection model for process lines that generates human review tickets"
+                    "Technology: product recommendation engine that suggests items to users, who freely decide whether to add them to cart",
+                    "Energy/O&G: compressor predictive maintenance system that alerts technician days in advance, requiring them to schedule the intervention",
+                    "Health: medical imaging system that highlights suspicious findings in X-rays for radiologist review and validation"
                 ],
                 questions: [
-                    "Does a human always approve before the recommended action is executed?",
-                    "Does the system generate insights or recommendations without acting autonomously?",
-                    "Is there a historically trained model involved in the analysis?"
+                    "Does a human always approve or execute the action before it has any real effect?",
+                    "Does the system generate recommendations or alerts without acting autonomously on processes or users?",
+                    "Is there a historically trained model that generates the insights or suggestions?"
                 ]
             }
         },
         {
             es: {
-                description: "El sistema puede actuar autónomamente en escenarios operativos definidos, pero un operador humano supervisa y puede intervenir o anular en cualquier momento.",
+                description: "El sistema puede actuar autónomamente en escenarios operativos definidos, pero un humano supervisa y puede intervenir o anular en cualquier momento.",
                 examples: [
-                    "Control avanzado de proceso (APC) en columna de destilación que ajusta variables en tiempo real con supervisor en sala de control",
-                    "Drone de inspección de oleoductos que vuela ruta autónoma con piloto remoto en standby",
-                    "Sistema ESD que ejecuta secuencia de cierre automático con validación posterior del supervisor"
+                    "Tecnología: sistema de moderación de contenido que elimina publicaciones automáticamente según política, con equipo humano revisando apelaciones y casos límite",
+                    "Energía/O&G: control avanzado de proceso (APC) en columna de destilación que ajusta variables en tiempo real con supervisor activo en sala de control",
+                    "Salud: robot quirúrgico asistido que ejecuta movimientos de alta precisión definidos por el cirujano, quien supervisa y puede tomar el control en cualquier momento"
                 ],
                 questions: [
-                    "¿El sistema puede ejecutar acciones sin solicitar aprobación humana para cada una?",
-                    "¿Existe un operador que supervisa y puede intervenir o anular en cualquier momento?",
-                    "¿Está limitado a rangos operativos o escenarios bien definidos y acotados?"
+                    "¿El sistema puede ejecutar acciones con efecto real sin solicitar aprobación humana para cada una?",
+                    "¿Existe un operador o equipo que supervisa y puede intervenir o anular en cualquier momento?",
+                    "¿Está limitado a rangos operativos o escenarios bien definidos y acotados previamente?"
                 ]
             },
             en: {
-                description: "The system can act autonomously within defined operational scenarios, but a human operator supervises and can intervene or override at any time.",
+                description: "The system can act autonomously within defined operational scenarios, but a human supervises and can intervene or override at any time.",
                 examples: [
-                    "Advanced process control (APC) on distillation column adjusting variables in real time with supervisor in control room",
-                    "Pipeline inspection drone flying autonomous route with remote pilot on standby",
-                    "ESD system executing automatic shutdown sequence with subsequent supervisor validation"
+                    "Technology: content moderation system that automatically removes posts per policy, with human team reviewing appeals and edge cases",
+                    "Energy/O&G: advanced process control (APC) on distillation column adjusting variables in real time with active supervisor in control room",
+                    "Health: surgical assistance robot that executes surgeon-defined high-precision movements, with surgeon supervising and able to take control at any time"
                 ],
                 questions: [
-                    "Can the system execute actions without requesting human approval for each one?",
-                    "Is there an operator who supervises and can intervene or override at any time?",
-                    "Is it limited to well-defined and bounded operational ranges or scenarios?"
+                    "Can the system execute actions with real effect without requesting human approval for each one?",
+                    "Is there an operator or team that supervises and can intervene or override at any time?",
+                    "Is it limited to previously well-defined and bounded operational ranges or scenarios?"
                 ]
             }
         },
         {
             es: {
-                description: "Opera completamente autónomo, toma decisiones complejas, aprende del entorno y se adapta. La supervisión humana es esporádica y de alto nivel.",
+                description: "Opera completamente autónomo, toma decisiones complejas, aprende del entorno y se adapta. La supervisión humana es esporádica y estratégica, no operativa.",
                 examples: [
-                    "Plataforma offshore con control de procesos y mantenimiento totalmente autónomo mediante Digital Twin operativo",
-                    "Sistema de trading de energía que gestiona portafolio de contratos de gas de forma autónoma con mínima intervención",
-                    "Red de sensores inteligentes en oleoducto que detecta, diagnostica y despacha mantenimiento sin intervención humana"
+                    "Tecnología: sistema de trading algorítmico de alta frecuencia que ejecuta miles de operaciones por segundo sin ninguna intervención humana",
+                    "Energía/O&G: plataforma offshore con control de procesos y gestión de mantenimiento totalmente autónomo mediante Digital Twin operativo",
+                    "Salud: sistema de dosificación adaptativa de medicamentos en UCI que ajusta dosis de sedación y analgesia continuamente en respuesta a parámetros del paciente"
                 ],
                 questions: [
-                    "¿Opera de forma continua sin supervisión humana directa?",
-                    "¿Puede tomar decisiones en situaciones no previstas explícitamente en sus reglas?",
-                    "¿Aprende y ajusta su comportamiento de forma continua con nuevos datos?"
+                    "¿Opera de forma continua sin supervisión humana directa en las decisiones operativas?",
+                    "¿Puede tomar decisiones en situaciones no previstas explícitamente en sus reglas originales?",
+                    "¿Aprende y ajusta su comportamiento de forma continua con nuevos datos del entorno?"
                 ]
             },
             en: {
-                description: "Operates completely autonomously, makes complex decisions, learns from its environment and adapts. Human supervision is sporadic and high-level.",
+                description: "Operates completely autonomously, makes complex decisions, learns from its environment and adapts. Human supervision is sporadic and strategic, not operational.",
                 examples: [
-                    "Offshore platform with fully autonomous process control and maintenance via operational Digital Twin",
-                    "Energy trading system autonomously managing gas contract portfolio with minimal intervention",
-                    "Smart pipeline sensor network that detects, diagnoses, and dispatches maintenance without human intervention"
+                    "Technology: high-frequency algorithmic trading system executing thousands of operations per second with no human intervention",
+                    "Energy/O&G: offshore platform with fully autonomous process control and maintenance management via operational Digital Twin",
+                    "Health: adaptive medication dosing system in ICU that continuously adjusts sedation and analgesia doses in response to patient parameters"
                 ],
                 questions: [
-                    "Does it operate continuously without direct human supervision?",
-                    "Can it make decisions in situations not explicitly covered by its rules?",
-                    "Does it continuously learn and adjust its behavior with new data?"
+                    "Does it operate continuously without direct human supervision over operational decisions?",
+                    "Can it make decisions in situations not explicitly covered by its original rules?",
+                    "Does it continuously learn and adjust its behavior with new environmental data?"
                 ]
             }
         }
@@ -146,26 +146,26 @@ export const LEVEL_CRITERIA = {
             es: {
                 description: "No existen controles, auditorías ni documentación del sistema. No hay política de uso, registro de decisiones ni responsable designado.",
                 examples: [
-                    "Script Python desarrollado por un ingeniero sin documentar, sin versionar ni registrar cambios",
-                    "Modelo de predicción de demanda corriendo en laptop personal sin trazabilidad de resultados",
-                    "Sistema heredado sin documentación técnica ni responsable formal de mantenimiento"
+                    "Tecnología: modelo de ML entrenado por un data scientist sin documentar, sin versionado en repositorio ni registro de experimentos",
+                    "Energía/O&G: script Python desarrollado por un ingeniero para optimizar producción, sin documentación técnica ni control de cambios",
+                    "Salud: algoritmo de triaje desarrollado por un médico sin aprobación regulatoria, sin documentación clínica ni responsable formal"
                 ],
                 questions: [
-                    "¿Existe algún registro de cómo toma decisiones el sistema?",
-                    "¿Hay alguien formalmente responsable si el sistema falla o actúa incorrectamente?",
+                    "¿Existe algún registro de cómo toma decisiones el sistema o qué datos usa?",
+                    "¿Hay alguien formalmente responsable si el sistema falla o genera resultados incorrectos?",
                     "¿Existe documentación técnica o de proceso, aunque sea básica?"
                 ]
             },
             en: {
                 description: "No controls, audits, or documentation exist. No usage policy, decision log, or designated responsible party.",
                 examples: [
-                    "Python script developed by an engineer without documentation, versioning, or change log",
-                    "Demand prediction model running on personal laptop with no results traceability",
-                    "Legacy system without technical documentation or formal maintenance owner"
+                    "Technology: ML model trained by a data scientist without documentation, no repository versioning or experiment tracking",
+                    "Energy/O&G: Python script developed by an engineer to optimize production, without technical documentation or change control",
+                    "Health: triage algorithm developed by a physician without regulatory approval, clinical documentation, or formal owner"
                 ],
                 questions: [
-                    "Is there any record of how the system makes decisions?",
-                    "Is there someone formally responsible if the system fails or misbehaves?",
+                    "Is there any record of how the system makes decisions or what data it uses?",
+                    "Is there someone formally responsible if the system fails or generates incorrect results?",
                     "Is there any technical or process documentation, even basic?"
                 ]
             }
@@ -174,50 +174,50 @@ export const LEVEL_CRITERIA = {
             es: {
                 description: "Existen controles básicos: hay un responsable del sistema, documentación mínima y algún registro de actividad. Sin procesos formales de revisión.",
                 examples: [
-                    "SCADA con manual de operación básico y un responsable de IT identificado",
-                    "Sistema de predicción con README actualizado y control de versiones en repositorio",
-                    "Herramienta de optimización con registro de accesos, sin revisión formal de decisiones"
+                    "Tecnología: API de scoring crediticio con README actualizado, responsable de equipo identificado y log de peticiones básico",
+                    "Energía/O&G: SCADA con manual de operación básico, responsable de IT identificado y registro de accesos",
+                    "Salud: sistema de historia clínica electrónica con administrador designado, backup diario configurado y listado de usuarios autorizados"
                 ],
                 questions: [
                     "¿Hay alguien que responde si el sistema falla o genera resultados incorrectos?",
-                    "¿Existe alguna documentación, aunque sea mínima?",
+                    "¿Existe alguna documentación del sistema, aunque sea mínima?",
                     "¿Se registra quién accede o modifica el sistema?"
                 ]
             },
             en: {
                 description: "Basic controls exist: there is a system owner, minimal documentation, and some activity log. No formal review processes.",
                 examples: [
-                    "SCADA with basic operations manual and identified IT responsible",
-                    "Prediction system with updated README and version control in repository",
-                    "Optimization tool with access log but no formal decision review"
+                    "Technology: credit scoring API with updated README, identified team owner, and basic request logging",
+                    "Energy/O&G: SCADA with basic operations manual, identified IT responsible, and access log",
+                    "Health: electronic health record system with designated administrator, configured daily backup, and list of authorized users"
                 ],
                 questions: [
                     "Is there someone who answers if the system fails or produces incorrect results?",
-                    "Is there any documentation, even minimal?",
+                    "Is there any system documentation, even minimal?",
                     "Is there a record of who accesses or modifies the system?"
                 ]
             }
         },
         {
             es: {
-                description: "Hay supervisión humana activa: revisiones periódicas, aprobación formal de cambios y mecanismos documentados para intervenir o anular el sistema.",
+                description: "Hay supervisión humana activa: revisiones periódicas, aprobación formal de cambios y mecanismos documentados para que operadores intervengan o anulen el sistema.",
                 examples: [
-                    "APC con comité de revisión mensual y proceso formal documentado para cambio de setpoints",
-                    "Sistema de inspección con IA que requiere sign-off del ingeniero senior en cada recomendación crítica",
-                    "Herramienta de planificación de pozos con revisión gerencial obligatoria antes de ejecutar perforación"
+                    "Tecnología: motor de detección de fraude financiero con comité de revisión mensual, proceso de apelación documentado y sign-off de compliance para cambios",
+                    "Energía/O&G: sistema APC con comité de revisión mensual y proceso formal documentado para cambio de setpoints operativos",
+                    "Salud: herramienta de diagnóstico asistido por IA con validación obligatoria del médico antes de asentar cualquier diagnóstico en la historia clínica"
                 ],
                 questions: [
                     "¿Los cambios al sistema requieren aprobación formal por parte de un responsable?",
-                    "¿Existe un proceso documentado para que operadores anulen o rechacen decisiones del sistema?",
+                    "¿Existe un proceso documentado para que los operadores anulen o rechacen decisiones del sistema?",
                     "¿Se revisan periódicamente los resultados y decisiones que produce el sistema?"
                 ]
             },
             en: {
-                description: "Active human supervision: periodic reviews, formal change approval, and documented mechanisms to intervene or override.",
+                description: "Active human supervision: periodic reviews, formal change approval, and documented mechanisms for operators to intervene or override.",
                 examples: [
-                    "APC with monthly review committee and formal documented process for setpoint changes",
-                    "AI inspection system requiring senior engineer sign-off on each critical recommendation",
-                    "Well planning tool with mandatory management review before executing drilling"
+                    "Technology: financial fraud detection engine with monthly review committee, documented appeals process, and compliance sign-off for changes",
+                    "Energy/O&G: APC system with monthly review committee and formal documented process for changes to operational setpoints",
+                    "Health: AI-assisted diagnostic tool with mandatory physician validation before recording any diagnosis in the patient record"
                 ],
                 questions: [
                     "Do system changes require formal approval from a responsible party?",
@@ -228,11 +228,11 @@ export const LEVEL_CRITERIA = {
         },
         {
             es: {
-                description: "Gobernanza estructurada: política de IA/automatización aprobada, comité de revisión activo, auditorías programadas, gestión de riesgos formal y roles y responsabilidades claros.",
+                description: "Gobernanza estructurada: política de IA/automatización aprobada por dirección, comité de revisión activo, auditorías programadas, gestión de riesgos formal y roles claros.",
                 examples: [
-                    "Sistema de optimización de yacimiento con política aprobada por directorio, revisiones trimestrales y risk register actualizado",
-                    "Plataforma de mantenimiento predictivo con owner designado, SLA documentado y proceso de escalada definido",
-                    "Sistema de trading energético con comité de modelos, backtesting obligatorio y límites de actuación establecidos"
+                    "Tecnología: plataforma de decisiones crediticias con política de uso de IA aprobada por directorio, auditorías trimestrales de equidad y explicabilidad obligatoria",
+                    "Energía/O&G: sistema de optimización de yacimiento con política aprobada por directorio, revisiones trimestrales y risk register formal actualizado",
+                    "Salud: sistema de IA clínica certificado por FDA/ANMAT, con plan de gestión de riesgos, monitoreo post-mercado y responsable de vigilancia designado"
                 ],
                 questions: [
                     "¿Existe una política formal de uso de IA/automatización aprobada a nivel directivo?",
@@ -241,11 +241,11 @@ export const LEVEL_CRITERIA = {
                 ]
             },
             en: {
-                description: "Structured governance: approved AI/automation policy, active review committee, scheduled audits, formal risk management, and clear roles and responsibilities.",
+                description: "Structured governance: management-approved AI/automation policy, active review committee, scheduled audits, formal risk management, and clear roles.",
                 examples: [
-                    "Reservoir optimization system with board-approved policy, quarterly reviews, and updated risk register",
-                    "Predictive maintenance platform with designated owner, documented SLA, and defined escalation process",
-                    "Energy trading system with model committee, mandatory backtesting, and defined actuation limits"
+                    "Technology: credit decision platform with board-approved AI usage policy, quarterly fairness audits, and mandatory explainability",
+                    "Energy/O&G: reservoir optimization system with board-approved policy, quarterly reviews, and formal updated risk register",
+                    "Health: clinical AI system certified by FDA/ANMAT, with risk management plan, post-market monitoring, and designated surveillance owner"
                 ],
                 questions: [
                     "Is there a formal AI/automation usage policy approved at executive level?",
@@ -256,28 +256,28 @@ export const LEVEL_CRITERIA = {
         },
         {
             es: {
-                description: "Gobernanza adaptativa: framework de IA dinámico que se actualiza según performance del sistema y contexto regulatorio, reporting automatizado y cultura de IA responsable consolidada.",
+                description: "Gobernanza adaptativa: framework de IA que se actualiza según performance real y contexto regulatorio, reporting automatizado a dirección y cultura de IA responsable consolidada.",
                 examples: [
-                    "Operadora global con AI Governance Office, políticas alineadas al EU AI Act y reporting continuo al directorio",
-                    "Empresa con monitoreo de drift y bias en modelos productivos con alertas automáticas y reentrenamiento",
-                    "Organización con programa de certificación de sistemas de IA críticos revisado y actualizado anualmente"
+                    "Tecnología: empresa fintech con AI Governance framework alineado a regulaciones (BCRA, GDPR), monitoreo continuo de drift y bias en producción con alertas automáticas",
+                    "Energía/O&G: operadora global con AI Governance Office, políticas alineadas al EU AI Act y reporting continuo de métricas de confiabilidad al directorio",
+                    "Salud: red hospitalaria con comité de ética en IA, revisiones periódicas de equidad en modelos de triaje y reporting automático a autoridades sanitarias reguladoras"
                 ],
                 questions: [
-                    "¿La gobernanza del sistema se actualiza dinámicamente según su performance real?",
-                    "¿Existe un framework de IA responsable maduro a nivel organizacional, no solo por sistema?",
+                    "¿La gobernanza del sistema se actualiza dinámicamente según su performance real en producción?",
+                    "¿Existe un framework de IA responsable maduro a nivel organizacional, no solo para este sistema?",
                     "¿El sistema reporta automáticamente métricas de confiabilidad y comportamiento a la dirección?"
                 ]
             },
             en: {
-                description: "Adaptive governance: dynamic AI framework updated based on system performance and regulatory context, automated reporting, and a consolidated responsible AI culture.",
+                description: "Adaptive governance: AI framework updated based on real performance and regulatory context, automated management reporting, and a consolidated responsible AI culture.",
                 examples: [
-                    "Global operator with AI Governance Office, EU AI Act-aligned policies, and continuous board reporting",
-                    "Company with production model drift/bias monitoring with automatic alerts and retraining",
-                    "Organization with critical AI systems certification program reviewed and updated annually"
+                    "Technology: fintech company with AI Governance framework aligned to regulations (Central Bank, GDPR), continuous production drift/bias monitoring with automatic alerts",
+                    "Energy/O&G: global operator with AI Governance Office, EU AI Act-aligned policies, and continuous reliability metrics reporting to board",
+                    "Health: hospital network with AI ethics committee, periodic fairness reviews of triage models, and automatic reporting to regulatory health authorities"
                 ],
                 questions: [
-                    "Is the system's governance dynamically updated based on its actual performance?",
-                    "Is there a mature responsible AI framework at the organizational level, not just per system?",
+                    "Is the system's governance dynamically updated based on its actual production performance?",
+                    "Is there a mature responsible AI framework at the organizational level, not just for this system?",
                     "Does the system automatically report reliability and behavior metrics to management?"
                 ]
             }
@@ -288,27 +288,27 @@ export const LEVEL_CRITERIA = {
             es: {
                 description: "El sistema no puede generar transacciones, compromisos contractuales ni decisiones con consecuencias financieras directas. Su rol es puramente informativo o analítico.",
                 examples: [
-                    "Dashboard de visualización de producción sin capacidad de generar órdenes ni acciones",
-                    "Sistema de reporting de consumo energético de solo lectura para análisis interno",
-                    "Monitor de temperatura en tanques que registra datos históricos sin capacidad de actuación"
+                    "Tecnología: sistema de logging de errores de aplicación que registra fallas sin capacidad de generar reembolsos, créditos ni acciones sobre cuentas",
+                    "Energía/O&G: dashboard de visualización de producción que muestra métricas en tiempo real sin poder generar órdenes ni comprometer recursos",
+                    "Salud: portal de información para pacientes con artículos de salud y preguntas frecuentes, sin ningún tipo de transacción o compromiso económico"
                 ],
                 questions: [
-                    "¿Puede el sistema generar órdenes de compra, contratos o compromisos de pago?",
-                    "¿Una decisión incorrecta podría causar pérdidas financieras directas?",
-                    "¿Su función es exclusivamente visualizar o analizar datos sin impacto productivo?"
+                    "¿Puede el sistema generar órdenes de compra, contratos, pagos o compromisos económicos?",
+                    "¿Una decisión incorrecta del sistema podría causar pérdidas financieras directas a la organización?",
+                    "¿Su función es exclusivamente visualizar o analizar datos sin impacto en procesos que mueven dinero?"
                 ]
             },
             en: {
                 description: "The system cannot generate transactions, contractual commitments, or decisions with direct financial consequences. Its role is purely informational or analytical.",
                 examples: [
-                    "Production visualization dashboard with no ability to generate orders or actions",
-                    "Read-only energy consumption reporting system for internal analysis",
-                    "Tank temperature monitor that records historical data with no actuation capability"
+                    "Technology: application error logging system that records failures with no ability to generate refunds, credits, or account actions",
+                    "Energy/O&G: production visualization dashboard showing real-time metrics with no ability to generate orders or commit resources",
+                    "Health: patient information portal with health articles and FAQs, with no transactions or economic commitments of any kind"
                 ],
                 questions: [
-                    "Can the system generate purchase orders, contracts, or payment commitments?",
-                    "Could an incorrect decision cause direct financial losses?",
-                    "Is its function exclusively to visualize or analyze data without productive impact?"
+                    "Can the system generate purchase orders, contracts, payments, or economic commitments?",
+                    "Could an incorrect system decision cause direct financial losses to the organization?",
+                    "Is its function exclusively to visualize or analyze data without impact on money-moving processes?"
                 ]
             }
         },
@@ -316,55 +316,55 @@ export const LEVEL_CRITERIA = {
             es: {
                 description: "Exposición financiera baja: el sistema puede generar costos pero de alcance limitado (hasta USD 50K por incidente). El impacto es contenible sin consecuencias sistémicas.",
                 examples: [
-                    "Sistema de scheduling de mantenimiento que puede asignar horas extras a cuadrilla de campo",
-                    "Herramienta de compras de repuestos con límite de aprobación automática bajo por ítem",
-                    "Optimizador de rutas de camiones cisterna con impacto acotado en costo de flete"
+                    "Tecnología: chatbot de atención al cliente que puede emitir cupones de descuento o créditos de hasta USD 20 por interacción sin aprobación humana",
+                    "Energía/O&G: sistema de scheduling de mantenimiento que puede asignar horas extras a una cuadrilla de campo generando costo incremental acotado",
+                    "Salud: sistema de gestión de turnos que puede reprogramar consultas generando costo de inactividad médica por slot vacío, impacto menor por evento"
                 ],
                 questions: [
                     "¿El costo máximo estimado de un error del sistema es inferior a USD 50K?",
                     "¿Se puede revertir o contener un error financiero antes de que escale a valores mayores?",
-                    "¿Los compromisos generados son de corto plazo y montos bajos?"
+                    "¿Los compromisos que genera son de corto plazo y montos bajos?"
                 ]
             },
             en: {
                 description: "Low financial exposure: the system can generate costs but of limited scope (up to USD 50K per incident). The impact is containable without systemic consequences.",
                 examples: [
-                    "Maintenance scheduling system that can assign overtime to a field crew",
-                    "Spare parts procurement tool with low per-item automatic approval limit",
-                    "Tank truck route optimizer with limited impact on freight costs"
+                    "Technology: customer service chatbot that can issue discount coupons or credits up to USD 20 per interaction without human approval",
+                    "Energy/O&G: maintenance scheduling system that can assign overtime to a field crew generating bounded incremental cost",
+                    "Health: appointment management system that can reschedule consultations generating medical inactivity cost per empty slot, minor impact per event"
                 ],
                 questions: [
                     "Is the estimated maximum cost of a system error below USD 50K?",
                     "Can a financial error be reversed or contained before escalating to higher values?",
-                    "Are the generated commitments short-term and low-amount?"
+                    "Are the commitments it generates short-term and low-amount?"
                 ]
             }
         },
         {
             es: {
-                description: "Exposición moderada: el sistema genera compromisos con impacto financiero significativo (USD 50K–500K), pero generalmente reversible dentro de la operación normal.",
+                description: "Exposición moderada: el sistema genera compromisos con impacto financiero significativo (USD 50K–500K), generalmente reversible dentro de la operación normal.",
                 examples: [
-                    "Sistema de optimización de blend de crudo que afecta el precio de venta de cargamentos",
-                    "Plataforma de gestión de contratos spot de gas natural con autonomía parcial de negociación",
-                    "Herramienta de planificación de inversiones en pozos que prioriza backlog de perforación"
+                    "Tecnología: motor de pricing dinámico de e-commerce que ajusta precios de catálogo en tiempo real, pudiendo afectar márgenes en forma significativa por campaña",
+                    "Energía/O&G: sistema de optimización de blend de crudo que afecta el precio de venta de cargamentos completos con impacto de cientos de miles de dólares",
+                    "Salud: sistema de gestión de camas hospitalarias que optimiza ocupación y asignación de quirófanos, con impacto directo en facturación mensual del hospital"
                 ],
                 questions: [
-                    "¿Puede el sistema comprometer fondos o contratos por más de USD 50K en una decisión?",
-                    "¿Un error podría afectar márgenes de producción o precios de venta en forma significativa?",
-                    "¿Las decisiones están dentro de límites delegados o requieren aprobación financiera?"
+                    "¿Puede el sistema comprometer fondos o ingresos por más de USD 50K en una sola decisión?",
+                    "¿Un error podría afectar márgenes, precios o facturación en forma significativa?",
+                    "¿Las decisiones están dentro de límites delegados o requieren aprobación financiera adicional?"
                 ]
             },
             en: {
-                description: "Moderate exposure: the system generates commitments with significant financial impact (USD 50K–500K), but generally reversible within normal operations.",
+                description: "Moderate exposure: the system generates commitments with significant financial impact (USD 50K–500K), generally reversible within normal operations.",
                 examples: [
-                    "Crude oil blending optimization system affecting cargo sale prices",
-                    "Natural gas spot contract management platform with partial negotiation autonomy",
-                    "Well investment planning tool that prioritizes drilling backlog by expected value"
+                    "Technology: e-commerce dynamic pricing engine that adjusts catalog prices in real time, potentially affecting margins significantly per campaign",
+                    "Energy/O&G: crude oil blending optimization system affecting prices of complete cargo shipments with impact of hundreds of thousands of dollars",
+                    "Health: hospital bed management system that optimizes occupancy and OR assignment, with direct impact on monthly hospital billing"
                 ],
                 questions: [
-                    "Can the system commit funds or contracts over USD 50K in a single decision?",
-                    "Could an error significantly affect production margins or sale prices?",
-                    "Are decisions within delegated limits or do they require financial approval?"
+                    "Can the system commit funds or revenue over USD 50K in a single decision?",
+                    "Could an error significantly affect margins, prices, or billing?",
+                    "Are decisions within delegated limits or do they require additional financial approval?"
                 ]
             }
         },
@@ -372,37 +372,37 @@ export const LEVEL_CRITERIA = {
             es: {
                 description: "Exposición alta: decisiones con impacto financiero de millones de dólares, con riesgo de pérdidas operativas mayores o daño a contratos y relaciones de largo plazo.",
                 examples: [
-                    "Sistema de trading de GNL que ejecuta contratos de compra/venta spot de corto plazo",
-                    "Plataforma de optimización de producción offshore que ajusta mix de ventas entre mercados",
-                    "Herramienta de gestión de hedge de commodities que toma posiciones en derivados energéticos"
+                    "Tecnología: plataforma de trading de criptomonedas que ejecuta órdenes de compra/venta por cuenta del usuario con límites automáticos de millones de dólares",
+                    "Energía/O&G: sistema de trading de GNL que ejecuta contratos spot de corto plazo con valor de millones de dólares por operación",
+                    "Salud: sistema de autorización de procedimientos médicos de alto costo que aprueba o rechaza cobertura de cirugías o tratamientos oncológicos de alto valor"
                 ],
                 questions: [
                     "¿Puede el sistema comprometer más de USD 500K en una sola decisión operativa?",
-                    "¿Un error podría dañar contratos de suministro de largo plazo o relaciones comerciales clave?",
-                    "¿Las pérdidas potenciales podrían aparecer en los estados financieros del trimestre?"
+                    "¿Un error podría dañar contratos de largo plazo o relaciones comerciales estratégicas?",
+                    "¿Las pérdidas potenciales podrían aparecer en los estados financieros trimestrales?"
                 ]
             },
             en: {
                 description: "High exposure: decisions with financial impact in the millions, with risk of major operational losses or damage to long-term contracts and relationships.",
                 examples: [
-                    "LNG trading system executing short-term spot buy/sell contracts",
-                    "Offshore production optimization platform adjusting sales mix between markets",
-                    "Energy commodity hedge management tool taking positions in energy derivatives"
+                    "Technology: crypto trading platform executing buy/sell orders on user's behalf with automatic limits in the millions of dollars",
+                    "Energy/O&G: LNG trading system executing short-term spot contracts worth millions of dollars per operation",
+                    "Health: high-cost medical procedure authorization system that approves or rejects coverage for surgeries or high-value oncology treatments"
                 ],
                 questions: [
                     "Can the system commit more than USD 500K in a single operational decision?",
-                    "Could an error damage long-term supply contracts or key commercial relationships?",
+                    "Could an error damage long-term contracts or strategic commercial relationships?",
                     "Could potential losses appear in quarterly financial statements?"
                 ]
             }
         },
         {
             es: {
-                description: "Exposición crítica: el sistema puede generar decisiones con impacto en decenas o centenas de millones de dólares, con riesgo para contratos estratégicos o valor de activos.",
+                description: "Exposición crítica: el sistema puede generar decisiones con impacto en decenas o centenas de millones de dólares, con riesgo para activos estratégicos o valor corporativo.",
                 examples: [
-                    "Sistema autónomo de gestión de portafolio de contratos de gas de mediano plazo (valor > USD 100M)",
-                    "IA de optimización de inversiones en capex de upstream con decisiones de perforación multianual",
-                    "Sistema de pricing dinámico en mercado mayorista de electricidad con posiciones de alta magnitud"
+                    "Tecnología: sistema autónomo de gestión de portafolio de inversiones de banco que administra activos por encima de USD 100M con intervención humana mínima",
+                    "Energía/O&G: IA de optimización de inversiones en capex de upstream con decisiones de perforación multianual que comprometen cientos de millones de dólares",
+                    "Salud: sistema de asignación de presupuesto en red hospitalaria que define inversiones en equipamiento crítico (tomógrafos, aceleradores lineales) a nivel regional"
                 ],
                 questions: [
                     "¿Una decisión incorrecta del sistema podría generar pérdidas superiores a USD 10M?",
@@ -411,11 +411,11 @@ export const LEVEL_CRITERIA = {
                 ]
             },
             en: {
-                description: "Critical exposure: the system can make decisions with financial impact in the tens or hundreds of millions, including risk to strategic contracts or asset values.",
+                description: "Critical exposure: the system can make decisions with financial impact in the tens or hundreds of millions, with risk to strategic assets or corporate value.",
                 examples: [
-                    "Autonomous medium-term gas contract portfolio management system (value > USD 100M)",
-                    "Upstream capex investment optimization AI with multi-year drilling decisions",
-                    "Dynamic pricing system in wholesale electricity market with high-magnitude positions"
+                    "Technology: autonomous bank investment portfolio management system administering assets above USD 100M with minimal human intervention",
+                    "Energy/O&G: upstream capex investment optimization AI with multi-year drilling decisions committing hundreds of millions of dollars",
+                    "Health: budget allocation system for hospital network that defines investments in critical equipment (CT scanners, linear accelerators) at regional level"
                 ],
                 questions: [
                     "Could an incorrect system decision generate losses exceeding USD 10M?",
@@ -428,141 +428,141 @@ export const LEVEL_CRITERIA = {
     operational: [
         {
             es: {
-                description: "Si el sistema falla, el impacto es despreciable: ninguna interrupción operativa, sin riesgo de seguridad, sin consecuencias contractuales ni ambientales.",
+                description: "Si el sistema falla, el impacto es despreciable: ninguna interrupción operativa, sin riesgo de seguridad, sin consecuencias contractuales ni para las personas.",
                 examples: [
-                    "Dashboard de KPIs sin conexión a sistemas de control o procesos productivos",
-                    "Herramienta de generación de reportes de producción para uso interno de gerencia",
-                    "Sistema de visualización de datos sísmicos offline para análisis de geólogos"
+                    "Tecnología: sistema de análisis de sentimiento en redes sociales que genera reportes internos, sin conexión a procesos de negocio ni decisiones operativas",
+                    "Energía/O&G: dashboard de KPIs de producción sin conexión a sistemas de control ni capacidad de actuación sobre equipos",
+                    "Salud: portal de información de salud pública con artículos editoriales, sin conexión a sistemas clínicos ni datos de pacientes"
                 ],
                 questions: [
-                    "¿El sistema está completamente desconectado de procesos productivos o sistemas de seguridad?",
-                    "¿Podría el sistema fallar durante días sin que afecte la operación?",
-                    "¿Su función es solo informativa o analítica, sin consecuencias operativas directas?"
+                    "¿El sistema está completamente desconectado de procesos productivos, clínicos o de seguridad?",
+                    "¿Podría el sistema fallar durante días sin que nadie lo note ni afecte la operación?",
+                    "¿Su función es puramente informativa o analítica, sin consecuencias operativas directas?"
                 ]
             },
             en: {
-                description: "If the system fails, the impact is negligible: no operational disruption, no safety risk, no contractual or environmental consequences.",
+                description: "If the system fails, the impact is negligible: no operational disruption, no safety risk, no contractual or human consequences.",
                 examples: [
-                    "KPI dashboard with no connection to control systems or productive processes",
-                    "Production report generation tool for internal management use",
-                    "Offline seismic data visualization system for geologist analysis"
+                    "Technology: social media sentiment analysis system generating internal reports, with no connection to business processes or operational decisions",
+                    "Energy/O&G: production KPI dashboard with no connection to control systems or ability to act on equipment",
+                    "Health: public health information portal with editorial articles, no connection to clinical systems or patient data"
                 ],
                 questions: [
-                    "Is the system completely disconnected from productive processes or safety systems?",
-                    "Could the system fail for days without affecting operations?",
+                    "Is the system completely disconnected from productive, clinical, or safety processes?",
+                    "Could the system fail for days without anyone noticing or operations being affected?",
                     "Is its function purely informational or analytical with no direct operational consequences?"
                 ]
             }
         },
         {
             es: {
-                description: "Impacto local: una falla afecta a un proceso o equipo específico sin propagarse. La recuperación es rápida y sin impacto en la producción global.",
+                description: "Impacto local: una falla afecta a un proceso o equipo específico sin propagarse. La recuperación es rápida y sin impacto en la operación global.",
                 examples: [
-                    "Sistema de monitoreo de una sola bomba de transferencia en batería de producción",
-                    "Controlador de temperatura de un horno de proceso secundario en refinería",
-                    "Optimizador de consumo energético de edificio administrativo de la operación"
+                    "Tecnología: sistema de recomendación de un solo canal de e-commerce; su falla reduce conversión en ese canal pero no afecta el negocio general",
+                    "Energía/O&G: sistema de monitoreo de una sola bomba de transferencia en batería de producción; hay redundancia disponible",
+                    "Salud: sistema de gestión de turnos de una sola especialidad médica en una clínica; los turnos se pueden gestionar manualmente en caso de falla"
                 ],
                 questions: [
-                    "¿Una falla se limita a un equipo o área pequeña sin propagarse?",
-                    "¿La recuperación toma pocas horas sin afectar la producción global?",
-                    "¿Hay sistemas de respaldo que asumen el control automáticamente ante una falla?"
+                    "¿Una falla se limita a un proceso, equipo o canal específico sin propagarse al resto?",
+                    "¿La recuperación toma pocas horas sin afectar la operación o atención general?",
+                    "¿Hay sistemas de respaldo o procesos manuales que pueden asumir las funciones ante una falla?"
                 ]
             },
             en: {
-                description: "Local impact: a failure affects a specific process or equipment without spreading. Recovery is quick and has no impact on overall production.",
+                description: "Local impact: a failure affects a specific process or equipment without spreading. Recovery is quick and has no impact on overall operations.",
                 examples: [
-                    "Single transfer pump monitoring system in a production battery",
-                    "Temperature controller for a secondary process furnace in a refinery",
-                    "Energy consumption optimizer for the operations administrative building"
+                    "Technology: recommendation system for a single e-commerce channel; its failure reduces conversion on that channel but doesn't affect the overall business",
+                    "Energy/O&G: monitoring system for a single transfer pump in a production battery; redundancy is available",
+                    "Health: appointment management system for a single medical specialty at a clinic; appointments can be managed manually if it fails"
                 ],
                 questions: [
-                    "Does a failure stay limited to a specific piece of equipment or small area without spreading?",
-                    "Does recovery take just a few hours without affecting overall production?",
-                    "Are there backup systems that take over automatically in case of failure?"
+                    "Does a failure stay limited to a specific process, equipment, or channel without spreading?",
+                    "Does recovery take just a few hours without affecting overall operations or service?",
+                    "Are there backup systems or manual processes that can take over in case of failure?"
                 ]
             }
         },
         {
             es: {
-                description: "Impacto departamental: una falla afecta un área o proceso completo (una unidad de proceso, un yacimiento), con interrupción parcial de la operación por horas o días.",
+                description: "Impacto departamental: una falla afecta un área o proceso completo, con interrupción parcial de la operación o servicio por horas o días.",
                 examples: [
-                    "Sistema de control de una planta completa de tratamiento de gas natural",
-                    "Optimizador de producción de un yacimiento maduro con múltiples pozos",
-                    "Sistema de gestión de una terminal de almacenamiento y despacho de combustibles"
+                    "Tecnología: plataforma de atención al cliente que gestiona todos los canales de soporte; su falla impide responder reclamos y afecta métricas de SLA",
+                    "Energía/O&G: sistema de control de una planta completa de tratamiento de gas natural; su falla detiene procesamiento de todo el fluido de la planta",
+                    "Salud: sistema de gestión de UCI de un hospital; su falla compromete el monitoreo coordinado de todos los pacientes críticos del servicio"
                 ],
                 questions: [
-                    "¿Una falla puede interrumpir la producción de una unidad o área completa?",
-                    "¿El tiempo de recuperación se mide en horas o en días completos?",
-                    "¿Hay impacto contractual si el proceso se detiene durante 24 a 48 horas?"
+                    "¿Una falla puede interrumpir la operación de un área, servicio o unidad completa?",
+                    "¿El tiempo de recuperación se mide en horas o días completos con impacto en el negocio o la atención?",
+                    "¿Hay impacto en SLAs, contratos o en la calidad de atención si el sistema para por 24-48 horas?"
                 ]
             },
             en: {
-                description: "Departmental impact: a failure affects a complete area or process (a process unit, a field), with partial operational disruption for hours or days.",
+                description: "Departmental impact: a failure affects a complete area or process, with partial disruption of operations or service for hours or days.",
                 examples: [
-                    "Control system for a complete natural gas processing plant",
-                    "Production optimizer for a mature field with multiple wells",
-                    "Management system for a fuel storage and dispatch terminal"
+                    "Technology: customer service platform managing all support channels; its failure prevents responding to claims and affects SLA metrics",
+                    "Energy/O&G: complete natural gas processing plant control system; its failure stops all fluid processing in the plant",
+                    "Health: hospital ICU management system; its failure compromises coordinated monitoring of all critical patients in the unit"
                 ],
                 questions: [
-                    "Can a failure disrupt the production of a complete unit or area?",
-                    "Is recovery time measured in hours or full days?",
-                    "Is there contractual impact if the process stops for 24 to 48 hours?"
+                    "Can a failure disrupt the operations of a complete area, service, or unit?",
+                    "Is recovery time measured in hours or full days with business or care impact?",
+                    "Is there impact on SLAs, contracts, or service quality if the system stops for 24-48 hours?"
                 ]
             }
         },
         {
             es: {
-                description: "Impacto organizacional: una falla puede afectar múltiples instalaciones, la cadena de suministro o la continuidad operativa, con pérdidas cuantificables.",
+                description: "Impacto organizacional: una falla puede afectar múltiples áreas, la cadena de valor o la continuidad operativa de la organización, con pérdidas cuantificables.",
                 examples: [
-                    "Sistema de control de la red de oleoductos o gasoductos de la compañía",
-                    "Plataforma de despacho y balance de producción de múltiples campos simultáneamente",
-                    "Sistema de gestión de activos (EAM) crítico para el mantenimiento de toda la operación"
+                    "Tecnología: core bancario que procesa todas las transacciones de la entidad; su falla impide operaciones de todos los clientes y genera riesgo regulatorio",
+                    "Energía/O&G: sistema de control de la red de oleoductos de la compañía; su falla puede detener toda la cadena de producción y transporte",
+                    "Salud: sistema de historias clínicas electrónicas de red hospitalaria multi-sede; su falla compromete la atención clínica segura en todas las sedes simultáneamente"
                 ],
                 questions: [
-                    "¿Una falla puede detener operaciones en más de una instalación o campo?",
-                    "¿El impacto incluye riesgo de incumplimiento de compromisos contractuales de entrega?",
-                    "¿La alta dirección sería notificada en pocas horas si el sistema falla?"
+                    "¿Una falla puede detener operaciones en más de un área, sede o servicio de la organización?",
+                    "¿El impacto incluye riesgo de incumplimiento de compromisos contractuales o regulatorios?",
+                    "¿La alta dirección sería notificada de urgencia si el sistema falla?"
                 ]
             },
             en: {
-                description: "Organizational impact: a failure can affect multiple facilities, the supply chain, or operational continuity, with quantifiable losses.",
+                description: "Organizational impact: a failure can affect multiple areas, the value chain, or the organization's operational continuity, with quantifiable losses.",
                 examples: [
-                    "Company pipeline or gas network control system",
-                    "Multi-field production dispatch and balancing platform",
-                    "Enterprise Asset Management (EAM) system critical for all maintenance operations"
+                    "Technology: bank core system processing all entity transactions; its failure prevents operations for all customers and generates regulatory risk",
+                    "Energy/O&G: company pipeline network control system; its failure can stop the entire production and transport chain",
+                    "Health: multi-site hospital network electronic health record system; its failure compromises safe clinical care at all sites simultaneously"
                 ],
                 questions: [
-                    "Can a failure stop operations at more than one facility or field?",
-                    "Does the impact include risk of failing to meet contractual delivery commitments?",
-                    "Would senior management be notified within hours if the system fails?"
+                    "Can a failure stop operations across more than one area, site, or service in the organization?",
+                    "Does the impact include risk of failing to meet contractual or regulatory commitments?",
+                    "Would senior management be urgently notified if the system fails?"
                 ]
             }
         },
         {
             es: {
-                description: "Impacto estratégico: una falla puede comprometer la continuidad del negocio, generar incidentes graves de seguridad o ambientales, o crear riesgo regulatorio mayor.",
+                description: "Impacto estratégico: una falla puede comprometer la continuidad del negocio, generar incidentes graves para personas o el ambiente, o crear riesgo regulatorio mayor.",
                 examples: [
-                    "Sistema de control integrado de plataforma offshore con manejo de hidrocarburos (riesgo de blowout o derrame)",
-                    "SCADA de red de distribución de gas natural urbana (riesgo de interrupción masiva o explosión)",
-                    "Sistema de detección y respuesta a derrames en oleoducto de transporte troncal interjurisdiccional"
+                    "Tecnología: sistema de pagos interbancarios que liquida operaciones de alto valor entre entidades financieras; una falla genera riesgo de contagio sistémico en el mercado",
+                    "Energía/O&G: SCADA de red de distribución de gas natural urbana; una falla puede causar interrupción masiva de suministro o riesgo de explosión en zonas residenciales",
+                    "Salud: sistema de triage y despacho de emergencias médicas de red de ambulancias; una falla en la asignación puede resultar en demoras críticas con riesgo de vida"
                 ],
                 questions: [
-                    "¿Una falla podría causar lesiones graves, fatalidades o daño ambiental significativo?",
-                    "¿Un incidente podría aparecer en medios de comunicación o generar multas regulatorias mayores?",
-                    "¿La continuidad del negocio estaría comprometida si el sistema falla más de 24 horas?"
+                    "¿Una falla podría causar lesiones graves, fatalidades, daño ambiental significativo o riesgo sistémico?",
+                    "¿Un incidente podría aparecer en medios de comunicación, generar multas regulatorias mayores o daño reputacional grave?",
+                    "¿La continuidad del negocio o la seguridad de las personas estaría en riesgo si el sistema falla más de pocas horas?"
                 ]
             },
             en: {
-                description: "Strategic impact: a failure can compromise business continuity, cause serious safety or environmental incidents, or create major regulatory risk.",
+                description: "Strategic impact: a failure can compromise business continuity, cause serious incidents affecting people or the environment, or create major regulatory risk.",
                 examples: [
-                    "Offshore platform integrated control system handling hydrocarbons (blowout or spill risk)",
-                    "Urban natural gas distribution network SCADA (risk of mass supply disruption or explosion)",
-                    "Spill detection and response system for inter-jurisdictional trunk pipeline"
+                    "Technology: interbank payment system settling high-value operations between financial entities; a failure creates systemic contagion risk in the market",
+                    "Energy/O&G: urban natural gas distribution network SCADA; a failure can cause massive supply disruption or explosion risk in residential areas",
+                    "Health: emergency medical triage and dispatch system for ambulance network; an assignment failure can result in critical delays with risk to life"
                 ],
                 questions: [
-                    "Could a failure cause serious injuries, fatalities, or significant environmental damage?",
-                    "Could an incident appear in the media or generate major regulatory fines?",
-                    "Would business continuity be at risk if the system fails for more than 24 hours?"
+                    "Could a failure cause serious injuries, fatalities, significant environmental damage, or systemic risk?",
+                    "Could an incident appear in the media, generate major regulatory fines, or cause serious reputational damage?",
+                    "Would business continuity or people's safety be at risk if the system fails for more than a few hours?"
                 ]
             }
         }
